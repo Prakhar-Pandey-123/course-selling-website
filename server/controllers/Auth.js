@@ -4,8 +4,6 @@ const jwt=require("jsonwebtoken");
 const mailSender=require("../utils/mailSender")
 const {passwordUpdated} =require("../mail/templates/passwordUpdate")
 const Profile=require("../models/Profile")
-//Bcrypt(hashing)is used during sign-up to hash the user's password before storing it in the database. It ensures that even if the database is compromised, the actual passwords are not exposed.
-// JWT is used after login. Once the user is authenticated, a JWT is generated and sent to the client. This token is then used for subsequent requests to verify the user's identity without needing to log in again.
 // to import the jwt secret
 require("dotenv").config();
 //otpGenerator is used to access the functionality of the otp-generator package we can call methods on this var
@@ -25,7 +23,7 @@ exports.sendOTP=async function(req,res){
             message:"user already registered"
         })
     }
-//generate otp using otpgernerator using its function .generate
+//generate otp using otpgenrerator using its function .generate
     let otp=otpGenerator.generate(6,{//6->length of otp
         upperCaseAlphabets:false,
         lowerCaseAlphabets:false,
@@ -36,8 +34,8 @@ console.log("generated otp is",otp);
 //we need to check if otp is unique because if 2 users gets same otp then one user will confirm with the saved otp in db while other could not
 //check if unique otp is generated or not
 //again create an otp and do it till u find a unique one
-    const result=await OTP.findOne({otp:otp})
-    console.log(result)
+    let result=await OTP.findOne({otp:otp})
+    console.log(result);
     while(result){
 //result==true if found a non unique otp
         otp=otpGenerator(6,{
@@ -45,6 +43,7 @@ console.log("generated otp is",otp);
             lowerCaseAlphabets:false,
             specialChars:false
         })
+        result=await OTP.findOne({otp:otp});
     }
 //create an entry for otp in db by using .create fn
 const otpPayload={email,otp};
@@ -101,13 +100,16 @@ try{
     const response=await OTP.find({email}).sort({createdAt:-1}).limit(1);
 // or const recentOtp = await OTP.findOne({ email }).sort({ createdAt: -1 });
 //validate the otp input by user and otp saved in db
+//[{ createdAt: "2025-04-17" }, // newest{ createdAt: "2025-04-15" },{ createdAt: "2025-04-10" }  // oldest]
+  
 if(response.length==0){
 //if length of array==0 then no otp found in db
     return res.status(400).json({
         success:false,
         message:"OTP Not found in db"
 })}//recentOtp will be the document(whole schema)so get the otp
-    else if(otp!==response[0].otp){
+    else if(otp!==response[0].otp){//array of docs
+//[{ email: "abc@gmail.com", otp: "5678", createdAt: "2024-01-03" }]
 //invalid otp is entered by the user
         return res.status(400).json({
             success:false,
@@ -115,6 +117,7 @@ if(response.length==0){
         })
     }
 //hash the password->converting the password in a fixed length random string this string cannot be reconverted to the password again so even if hacker gets the hash from db he cant get the password .when the user comes and inputs his password then again the password is converted to the same string and matched with the saved string if it matches then user is authentic as we have used a fixed algorithm to hash it
+//Bcrypt(hashing)is used during sign-up to hash the user's password before storing it in the database. It ensures that even if the database is compromised, the actual passwords are not exposed.
     const hashedPassword=await bcrypt.hash(password,10);
 //10->cost factor(salt round)how many iterations are required to make the hashed string.the more it is the harder it is to hack also will take more time to get created 
 //these info not required to befilled at time of sign up but can be filled latter 
@@ -134,7 +137,7 @@ const user=await User.create({
     contactNumber:contactNumber,
     password:hashedPassword,
     accountType:accountType,
-    additionalDetails:profileDetails._id,
+    additionalDetails:profileDetails._id,//see this here id is given bcoz we have to send an object(schema model) in this field of the user model
 // use tilde bcoz the after dollar will be replaced by var if u use " " it wont work
     image:`https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`
 //form img by taking first char of first and last name .its an api.api is a way by which 2 diff programs talk to each other and share functionality like u(program1)went to restaurant(program2)then a waiter comes(api)asks for order goes to restaurant and gets ur pizza(functionality)
@@ -153,6 +156,7 @@ const user=await User.create({
         })
     }
 }
+
 // for login functionality
 exports.login=async function(req,res){
     try{
@@ -182,6 +186,8 @@ exports.login=async function(req,res){
                 id:user._id,
                 accountType:user.accountType
             }
+// JWT is used after login. Once the user is authenticated, a JWT is generated and sent to the client. This token is then used for subsequent requests to verify the user's identity without needing to log in again.
+//It is sent with every request you make (like opening a page or sending a message).The server checks the token to know who you are and if you’re allowed to do something.
             const token=jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:"24h"});
 //create cookie and send response
             user.token=token;//storing token to be send to user
@@ -192,6 +198,8 @@ exports.login=async function(req,res){
                 expires:new Date(Date.now())+3*24*60*60*1000,
                 httpOnly:true
             }
+//Auto-refresh: Some websites refresh the token before it expires, using the cookie A second token (called a refresh token) may be stored in the cookie.It’s used to get a new token without logging in again.Security balance: Short token life = safer.Longer cookie life = better user experience.
+//A cookie is a small file the website saves in your browser.The token (your login ID) is often stored inside a cookie.The browser sends this cookie to the server automatically with each request.
             res.cookie("token(cookie-name)",token,options).status(200).json({
                 success:true,
                 token:token,
@@ -285,4 +293,4 @@ catch(error){
         error:error.message,
     })        
 }
-};//Auth.js
+};

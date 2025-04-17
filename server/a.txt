@@ -18,3 +18,9 @@ mongoose: Lets your Node.js app talk to MongoDB (a NoSQL database) easily.
 nodemailer: Sends emails (like password resets) from your Node.js app.
 nodemon: Auto-restarts your server when you save code (dev-only).
 otp-generator: Generates one-time passwords (OTPs) for SMS/email verification.
+
+git add .
+git commit -m "your message here"
+git push
+
+//check if its correct=>line 102 of Auth.js
