@@ -1,0 +1,20 @@
+npm init -y=> initializes a new nodejs project by creating package.json
+package.json =>contains dependencies(package ur appln will need like express,nodemon etc)
+
+framework is like a pre-built toolbox for coding that gives you a structured way to build applications faster. Express is a framework for Node.js that simplifies creating web servers, just like React helps build user interfaces easily
+
+Express is a fast and lightweight web framework for Node.js (which lets you run JavaScript on a server). It helps you build websites and backend services easily.
+
+Node.js is a JavaScript runtime that lets you run JavaScript code outside a web browser (like on a server). It’s built on Chrome’s V8 engine (the same one that powers Google Chrome) and makes JavaScript fast and efficient for backend development. With Node.js, you can build web servers, APIs, real-time apps (like chats), and more—all using JavaScript, the language you already know from frontend web dev!
+
+A server is like a powerful, always-on computer that stores data, runs apps, and delivers information to other devices (like your phone or laptop) when requested. For example, when you visit a website, a web server sends the site’s files to your browser. Servers handle tasks in the background—hosting websites, managing databases, or running APIs—so users can access services smoothly.
+
+bcrypt: Encrypts passwords securely so they can't be stolen from your database.
+cookie-parser: Reads cookies from browsers to handle user sessions easily.
+dotenv: Loads secrets (like API keys) from a .env file so they stay private.
+express: The core framework for building your Node.js web server/app.
+jsonwebtoken: Creates secure login tokens (JWT) for user authentication.
+mongoose: Lets your Node.js app talk to MongoDB (a NoSQL database) easily.
+nodemailer: Sends emails (like password resets) from your Node.js app.
+nodemon: Auto-restarts your server when you save code (dev-only).
+otp-generator: Generates one-time passwords (OTPs) for SMS/email verification.
