@@ -40,10 +40,10 @@ const userSchema= new mongoose.Schema({
         type:String,// ofcourse url of img
         required:true,
     },
-    token:{//its a jwt token,used when the user has logged in
+    token:{//this is a reset password links's token,it is used to tell the server whose password need to be changed
         type:String,
     },
-    resetPasswordExpires:{
+    resetPasswordExpires:{//time at which the reset password link's token expires
         type:Date
     },
     courseProgress:[
