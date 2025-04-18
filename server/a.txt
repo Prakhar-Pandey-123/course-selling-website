@@ -19,8 +19,8 @@ nodemailer: Sends emails (like password resets) from your Node.js app.
 nodemon: Auto-restarts your server when you save code (dev-only).
 otp-generator: Generates one-time passwords (OTPs) for SMS/email verification.
 
-git add .
-git commit -m "your message here"
-git push
+git add .  =>Pick all my changed files and get them ready.
+git commit -m "your message here" =>Save these changes with a note about what I did
+git push  =>Send my saved work to the online project (like GitHub).
 
 //check if its correct=>line 102 of Auth.js
