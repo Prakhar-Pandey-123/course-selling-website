@@ -86,5 +86,29 @@ exports.updatedSubSection=async function(req,res){
 }
 //hw:deleteSubSection
 exports.deletedSubSection=async function(req,res){
-    
+    try{
+        const {subSectionId,sectionId}=req.body;
+    if(!subSectionId || !sectionId){
+        return res.status(400).json({
+            success:false,
+            message:"all fields are required"
+        })
+    }
+    await Section.findByIdAndUpdate(sectionId,{
+        pull:{
+            subSection:subSectionId
+        }
+    });
+    await SubSection.findByIdAndDelete(subSectionId)
+    return res.status(200).json({
+        success:true,
+        message:"subsection deleted successfully"
+    })
+    }
+    catch(error){
+        return res.status(500).json({
+            success:false,
+            message:error.message
+        })
+    }
 }
