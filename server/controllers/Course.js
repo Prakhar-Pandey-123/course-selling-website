@@ -6,13 +6,13 @@ const {uploadImageToCloudinary}=require("../utils/imageUploader");
 exports.createCourse=async function(req,res){
 try {
 //fetch data of the new course that is needed to be created
-    const {courseName,courseDescription,whatYouWillLearn,price,category}=req.body;
+    const {courseName,courseDescription,whatYouWillLearn,price,category,tags}=req.body;
 //req will come from the frontend send by user
 //we need tag bcoz tag will contain all the related courses 
 //get thumbnail of the course.thumbnail will be present in local storage first uploaded by instructor in files
     const thumbnail=req.files.thumbnailImage;
     //validation if all entries are entered
-    if(!courseName ||!courseDescription ||!whatYouWillLearn ||!price ||!category ||!thumbnail){
+    if(!courseName ||!courseDescription ||!whatYouWillLearn ||!price ||!category ||!thumbnail || !tags){
         return res.status(400).json({
             success:false,
             message:"all fields are required"
@@ -46,6 +46,7 @@ try {
         instructor:instructorDetails._id,
         whatYouWillLearn:whatYouWillLearn,
         price:price,
+        tags:tags,
         category:categoryDetails._id,//or can do tag:tag 
         thumbnail:thumbnailImage.secure_url//returned from cloudinary
     })
@@ -91,6 +92,8 @@ exports.showAllCourses=async function(req,res){
             price:true,
             thumbnail:true,
             instructor:true,
+            tags:true,
+            category:true,
             ratingAndReviews:true,
             studentsEnrolled:true,
         }).populate("instructor").exec();
@@ -136,8 +139,14 @@ exports.getCourseDetails=async function(req,res){
                   if(!courseDetails){
                     return res.status(400).json({
                         success:true,
-                        message:"course details fetched ",
+                        message:"course details can't be fetched ",
                         data:courseDetails
+                    })
+                  }
+                  else{
+                    return res.status(200).json({
+                        success:true,
+                        message:courseDetails,
                     })
                   }
     }
