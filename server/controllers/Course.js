@@ -120,7 +120,7 @@ exports.getCourseDetails=async function(req,res){
         //get id
         const {courseId}=req.body;
         //find course details
-        const courseDetails=await Course.find({_id:courseId})
+        const courseDetails=await Course.findById(courseId)
 //now in course the instructor is an objectid of user and which in turn contain an objectid of additional details as profile
         .populate({
                         path:"instructor",
@@ -128,7 +128,7 @@ exports.getCourseDetails=async function(req,res){
                             path:"additionalDetails"
                         },//we have objectid of category but in category we dont have any other objectid hence we did like this
                   }).populate("category")
-                  .populate("ratingAndreviews")
+                  .populate("ratingAndReviews")
                   .populate({
                     path:"courseContent",
                     populate:{
@@ -138,9 +138,8 @@ exports.getCourseDetails=async function(req,res){
 //validation
                   if(!courseDetails){
                     return res.status(400).json({
-                        success:true,
+                        success:false,
                         message:"course details can't be fetched ",
-                        data:courseDetails
                     })
                   }
                   else{
