@@ -1,3 +1,8 @@
+Route=It's the part you type after your website’s domain.Defines a single path like /login.When someone visits your app (like typing a URL then clicking a button), that request needs to go somewhere. That “somewhere” is a route.eg-https://studynotion.com/courses here 
+/courses is a route
+Controller=it is a function that Handles logic for what the route should do
+router =connects a route (URL) to the actual logic (controller) and also adds middlewares if needed.
+
 npm init -y=> initializes a new nodejs project by creating package.json
 package.json =>contains dependencies(package ur appln will need like express,nodemon etc)
 
@@ -105,3 +110,22 @@ Example: Password 123456 becomes something like $2b$10$Xs3...
 ====================================================
 
 hmac=hash based message authentication code=hash+secret key
+
+=============================================================
+
+Go to MongoDB Atlas and log in.
+Click on the project where you already have Cluster0.
+On the dashboard, click on "Cluster0" (or your active cluster).
+Click “Browse Collections” (this opens the database/collection area).
+Click the “Create Database” button.
+Fill the form:
+Database Name: study_notion
+Collection Name: e.g., users or anything (you can change it later)
+Click “Create” — the study_notion database is now created.
+2. Get the Connection String
+In the Cluster0 view, click the “Connect” button (top-right).
+Choose “Connect your application”.
+Set:Driver: Node.js
+Copy the given connection string:
+===================================================
+Not your Gmail password,,Google blocks less secure apps, so you need to generate an app password.

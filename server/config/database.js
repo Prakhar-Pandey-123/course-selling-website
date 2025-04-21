@@ -22,3 +22,4 @@ exports.connect=function(){//function named"connect" is made and then it is atta
         process.exit(1);// to exit the process
     })
 }
+//mongodb+srv://prakhar9704:<db_password>@cluster0.ylpezym.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
