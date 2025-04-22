@@ -1,4 +1,6 @@
-// Import the required modules
+//Route=It's the part you type after your website’s domain.Defines a single path like /login.When someone visits your app (like typing a URL then clicking a button), that request needs to go somewhere. That “somewhere” is a route.eg-https://studynotion.com/courses here /courses is a route
+//Controller=it is a function that Handles logic for what the route should do
+//router =connects a route (URL) to the actual logic (controller) and also adds middlewares if needed.also is needed to group similar routes together.
 const express = require("express")
 const router = express.Router()
 // Import the required controllers and middleware functions
@@ -13,8 +15,7 @@ const {
   resetPassword,
 } = require("../controllers/ResetPassword")
 const { auth } = require("../middlewares/auth")
-//this auth middleware is not used in signup,login,sendotp,forgot password as the user is not yet logged in 
-// it is used in change password ,bcoz then user has to be logged in 
+//this auth middleware is not used in signup,login,sendotp,forgot password as the user is not yet logged in.it is used in change password ,bcoz then user has to be logged in 
 
 //                                 Authentication routes 
 // Route for user login

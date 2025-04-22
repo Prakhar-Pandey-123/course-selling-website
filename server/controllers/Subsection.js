@@ -48,7 +48,7 @@ return res.status(200).json({
     }
 }
 //hw:updateSubSection
-exports.updatedSubSection=async function(req,res){
+exports.updateSubSection=async function(req,res){
     try{
         //get data
         const {subSectionId,sectionId,newtitle}=req.body;
@@ -60,10 +60,10 @@ exports.updatedSubSection=async function(req,res){
            })
         }
 
-       const updatedSubSection= await SubSection.findByIdAndUpdate(subSectionId,{
+       const updateSubSection= await SubSection.findByIdAndUpdate(subSectionId,{
             title:newtitle,
         },{new:true})
-        if(!updatedSubSection)
+        if(!updateSubSection)
         {
             return res.status(500).json({
                 success:true,
@@ -73,7 +73,7 @@ exports.updatedSubSection=async function(req,res){
         return res.status(200).json({
             success:true,
             message:"updated the subsection",
-            updatedSubSection,
+            updateSubSection,
         })
 
     }
@@ -85,7 +85,7 @@ exports.updatedSubSection=async function(req,res){
     }
 }
 //hw:deleteSubSection
-exports.deletedSubSection=async function(req,res){
+exports.deleteSubSection=async function(req,res){
     try{
         const {subSectionId,sectionId}=req.body;
     if(!subSectionId || !sectionId){
