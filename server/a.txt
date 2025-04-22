@@ -1,8 +1,3 @@
-Route=It's the part you type after your website’s domain.Defines a single path like /login.When someone visits your app (like typing a URL then clicking a button), that request needs to go somewhere. That “somewhere” is a route.eg-https://studynotion.com/courses here 
-/courses is a route
-Controller=it is a function that Handles logic for what the route should do
-router =connects a route (URL) to the actual logic (controller) and also adds middlewares if needed.
-
 npm init -y=> initializes a new nodejs project by creating package.json
 package.json =>contains dependencies(package ur appln will need like express,nodemon etc)
 
