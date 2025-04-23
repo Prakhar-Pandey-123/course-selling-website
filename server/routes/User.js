@@ -6,8 +6,8 @@ const router = express.Router()
 // Import the required controllers and middleware functions
 const {
   login,
-  signup,
-  sendotp,
+  signUp,
+  sendOTP,
   changePassword,
 } = require("../controllers/Auth")
 const {
@@ -27,11 +27,11 @@ router.post("/login", login)
 //login: Authenticates the user by checking email and password, then generates and sends a JWT token for session management.
 
 // Route for user signup
-router.post("/signup", signup)
+router.post("/signUp", signUp)
 //signUp: Registers a new user by validating inputs, verifying OTP, hashing the password, and saving the user to the database
 
 // Route for sending OTP to the user's email
-router.post("/sendotp", sendotp)
+router.post("/sendOTP", sendOTP)
 //sendOTP: Generates and sends a unique OTP to the user’s email for verification during signup or password reset.
 
 // Route for Changing the password
@@ -50,4 +50,4 @@ router.post("/reset-password", resetPassword)
 //resetPassword:Validates the reset token, ensures it has not expired, hashes the new password, and updates the user's password in the database.
 
 // Export the router for use in the main application
-module.exports = router
+module.exports = router;

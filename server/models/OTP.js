@@ -8,7 +8,7 @@ const OTPSchema=new mongoose.Schema({
     },
     otp:{
         type:String,
-        required:true0
+        required:true,
     },
     createdAt:{
         type:Date,//Date->used to store date and time value

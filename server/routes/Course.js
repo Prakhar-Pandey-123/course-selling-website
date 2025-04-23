@@ -3,7 +3,7 @@ const router = express.Router()
 // Course Controllers Import
 const {
   createCourse,
-  getAllCourses,
+  showAllCourses,
   getCourseDetails,
 //   getInstructorCourses,
 //   editCourse,
@@ -20,7 +20,7 @@ const {
   createCategory,
   categoryPageDetails,
   addCourseToCategory,
-} = require("../controllers/Category")
+} = require("../controllers/Categorys")
 //createCategory=Allows an admin to create a new course category by providing a name and description.
 //showAllCategories=Fetches and displays all available categories with their names and descriptions.
 // categoryPageDetails=Shows details of a category, including its courses, other courses from different categories, and popular courses.
@@ -46,7 +46,7 @@ const {
   createRating,
   getAverageRating,
   getAllRating,
-} = require("../controllers/RatingAndReviews")
+} = require("../controllers/RatingAndReview")
 //createRating=Verifies the requester is enrolled in the course and hasn’t reviewed it before.Creates a new rating‑and‑review document
 //getAllRating=Retrieves every rating‑and‑review, sorted by highest rating.
 
@@ -73,7 +73,7 @@ router.post("/deleteSubSection", auth, isInstructor, deleteSubSection)
 router.post("/addSubSection", auth, isInstructor, createSubSection)
 
 //is meant to be public data.Anyone—logged in or not—can browse the course catalog, so no auth is req.
-router.get("/getAllCourses", getAllCourses)
+router.get("/getAllCourses", showAllCourses)
 // Get Details for a Specific Courses
 router.post("/getCourseDetails", getCourseDetails)
 
