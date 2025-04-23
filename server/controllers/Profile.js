@@ -2,6 +2,7 @@
 const Course = require("../models/Course");
 const Profile=require("../models/Profile");
 const User=require("../models/User");
+const {uploadImageToCloudinary}=require("../utils/imageUploader");
 exports.updateProfile=async function(req,res){
     try {
 //get data 
@@ -102,5 +103,41 @@ exports.getAllUserDetails=async function(req,res){
             error:error.message,
         })
     }
-    
+}
+exports.updateDisplayPicture = async (req, res) => {
+	try {
+		const id = req.user.id;
+	const user = await User.findById(id);
+	if (!user) {
+		return res.status(404).json({
+            success: false,
+            message: "User not found",
+        });
+	}
+	const image = req.files.pfp;//put>>body>>form-data(it is like a html form)>>set key to pfp and value as a image
+	if (!image) {
+		return res.status(404).json({
+            success: false,
+            message: "Image not found",
+        });
+    }
+	const uploadDetails = await uploadImageToCloudinary(
+		image,
+		process.env.FOLDER_NAME
+	);
+	console.log(uploadDetails);
+	const updatedImage = await User.findByIdAndUpdate({_id:id},{image:uploadDetails.secure_url},{ new: true });
+    res.status(200).json({
+        success: true,
+        message: "Image updated successfully",
+        data: updatedImage,
+    });	
+	} catch (error) {
+        console.log(error.message)
+		return res.status(500).json({
+            success: false,
+            message: "can't upload the profile pic",
+        });
+		
+	}
 }

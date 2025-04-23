@@ -170,13 +170,14 @@ exports.login=async function(req,res){
             })
         }
 //check if user exist or not
-        const user=await User.findOne({email}).populate("additionalDetails");
+        const user=await User.findOne({email});
         if(!user){
             return res.status(401).json({
                 success:false,
                 message:"user is not registered,please sign up"
             })
         }
+      
 //check password first bcrypt it then compare it with password saved in db at time of sign up
         if(await bcrypt.compare(password,user.password)){
 //then create the token
@@ -186,21 +187,24 @@ exports.login=async function(req,res){
                 id:user._id,
                 accountType:user.accountType
             }
+            console.log("done with password comparison");
 // JWT is used after login. Once the user is authenticated, a JWT is generated and sent to the client. This token is then used for subsequent requests to verify the user's identity without needing to log in again.
 //It is sent with every request you make (like opening a page or sending a message).The server checks the token to know who you are and if you’re allowed to do something.
             const token=jwt.sign(payload,process.env.JWT_SECRET,{expiresIn:"24h"});
 //create cookie and send response
+             user.password=undefined;
             user.token=token;//storing token to be send to user
-            user.password=undefined;
+         
 //we need to send the user object in response as json(besides message and status) of that particular user trying to login so we can't send the password for security reason hence we undefined it then send it
 // setting user.password = undefined only removes the password field from the user object in memory that is being prepared for the response. It does not modify or remove the password stored in the database.(User)
             const options={
-                expires:new Date(Date.now())+3*24*60*60*1000,
+                expires:new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
                 httpOnly:true
             }
 //Auto-refresh: Some websites refresh the token before it expires, using the cookie A second token (called a refresh token) may be stored in the cookie.It’s used to get a new token without logging in again.Security balance: Short token life = safer.Longer cookie life = better user experience.
 //A cookie is a small file the website saves in your browser.The token (your login ID) is often stored inside a cookie.The browser sends this cookie to the server automatically with each request.
-            res.cookie("token(cookie-name)",token,options).status(200).json({
+            
+           return res.cookie("token",token,options).status(200).json({
                 success:true,
                 token:token,
                 user:user,
@@ -248,14 +252,14 @@ exports.changePassword=async function(req,res){
     }
     //all details are not entered
   if(!oldPassword || !newPassword|| !confirmNewPassword){
-    return res.status(403).status({
+    return res.status(403).json({
         success:false,
         message:"enter all deatils"
     })
   }
   //if new password and confirm new password do not match 
   if(newPassword!==confirmNewPassword){
-    return res.status(400).status({
+    return res.status(400).json({
         success:false,
         message:"new and confirm password should be same"
     })

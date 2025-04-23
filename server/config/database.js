@@ -10,8 +10,8 @@ require("dotenv").config();
 //csm->connect-schema-model so here we doing only connect
 exports.connect=function(){//function named"connect" is made and then it is attached to exports so that we can export this function to other files .connect is an asynchronous process
     mongoose.connect(process.env.MONGODB_URL,{//to connect mongoose by the url provided in the process.env file
-        useNewUrlParser:true,//tells the mongodb to use new version of mongodb 
-        useUnifiedTopology:true,//to use new version of mongodb's connection strings
+        // useNewUrlParser:true,//tells the mongodb to use new version of mongodb 
+       
     })
     .then(function(){//as .connect is asynchronous task
         console.log("DB connected successfully")
