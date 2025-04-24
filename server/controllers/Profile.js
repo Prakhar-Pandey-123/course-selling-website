@@ -6,18 +6,12 @@ const {uploadImageToCloudinary}=require("../utils/imageUploader");
 exports.updateProfile=async function(req,res){
     try {
 //get data 
-const {dateOfBirth="",about="",contactNumber,gender}=req.body
+const {dateOfBirth="",about="",contactNumber="",gender=""}=req.body
 //if we didnt get any input for dateofbirth then it take"" as its value (default value)
 //get userId of whose profile is to be updated
     const id=req.user.id;
 //so how does id comes in user? ans-> we put it,when we created a token for the user we put id in payload so when user comes and has token then this token is reconverted to payload(decode) hence when user is signed in then he has his user id
-//validate data received
-    if(!contactNumber || !gender || !id){
-        return res.status(400).json({
-        success:false,
-        message:"all fields are required" 
-        })
-    }
+
 //find user then get the details of his profile
     const userDetails=await User.findById(id);
     //get the user id 
