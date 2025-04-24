@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const User=require("../models/User");
-
+const crypto=require("crypto");
 const mailSender=require("../utils/mailSender");
 //when user clicks on the reset password button then generate a link ,send the link by email,when user opens it then a frontend should open(link is of frontend)where user can type the new password
 //so if some one gets the link with the token and the token is matched with the token saved in db and it is same then when we submit new password then the password of the user containing that token will be changed , thats why we need token.the token acts as a temporary secret key to confirm the identity of the user during the password reset process.
