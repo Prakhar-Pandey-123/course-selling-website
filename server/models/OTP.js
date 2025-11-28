@@ -12,8 +12,8 @@ const OTPSchema=new mongoose.Schema({
     },
     createdAt:{
         type:Date,//Date->used to store date and time value
-        default:Date.now(),//number of milliseconds since 1 jan 1960 if no value send to this then by default it will take the current time
-        expire:5*60//the WHOLE data which follows the WHOLE schema gets deleted in 5 minutes
+        default:Date.now,//number of milliseconds since 1 jan 1960 if no value send to this then by default it will take the current time
+        expires:5*60//the WHOLE data which follows the WHOLE schema gets deleted in 5 minutes
     }
 })
 
@@ -23,7 +23,8 @@ const OTPSchema=new mongoose.Schema({
 //sendverificationEmail fn sends the otp using sendMailer fn defined in utils if email is send then mssg is printed
 async function sendVerificationEmail(email,otp){
     try{
-        const mailResponse=await mailSender(email,"Verification Email from Study Notion",otp)
+        const otpTemplate = require("../mail/templates/emailVerificationTemplate");
+        const mailResponse=await mailSender(email,"Verification Email from Study Notion",otpTemplate(otp))
         console.log("Email send successfully",mailResponse);
      }
     catch(error){
@@ -36,6 +37,7 @@ async function sendVerificationEmail(email,otp){
 //if email is send then next is called and otp is saved
 
 OTPSchema.pre("save",async function(next){//calling above function
+    console.log("Pre save hook called for OTP");
     await sendVerificationEmail(this.email,this.otp);
     next();
 })
